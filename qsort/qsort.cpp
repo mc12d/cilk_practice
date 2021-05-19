@@ -80,7 +80,7 @@ void check_qsort_correctness(int arr_size) {
     double *arr = gen_random_array(arr_size);
     qsort(arr, 0, arr_size - 1);
     for (int i = 0; i < arr_size - 1; i++) {
-        assert(arr[i] <= arr[i + 1] && "Array not sorted!");
+        assert(arr[i] <= arr[i + 1] && "Array is not sorted!");
     }
     fprintf(stderr, "Qsort correctness check passed.\n");
 }
@@ -129,9 +129,10 @@ int main() {
 
     check_qsort_correctness(arr_size);
 
-    double avg_time = qsort_time_ms(arr_size, n_stages);
+    double avg_time      = qsort_time_ms(arr_size, n_stages, false);
+    double avg_time_cilk = qsort_time_ms(arr_size, n_stages, true);
 
-    fprintf(stderr, "Qsort avg time: %.1lf ms\tArray size: %d\tNWorkers: %d\n", avg_time, arr_size, n_workers);
-    fprintf(stdout, "%d, %.1lf\n", n_workers, avg_time);
+    fprintf(stderr, "Qsort avg time: %.1lf ms\tArray size: %d\tWorkers: %d\n", avg_time_cilk, arr_size, n_workers);
+    fprintf(stdout, "%d, %.1lf, %.3lf\n", n_workers, avg_time_cilk, avg_time / avg_time_cilk);
     return 0;
 }
